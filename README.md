@@ -1,0 +1,2 @@
+# Estudos sobre otimização
+ 
