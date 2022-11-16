@@ -26,7 +26,7 @@ void MLP :: calcularcost(Solucao *s, Data *d){
         s->cost += d->matrizAdj[s->sequence[i]][s->sequence[i+1]];
 }
 
-void MLP :: UpdateAllSubseq(Solucao *s, vector<vector<Subsequence>> &subseq_matrix){
+void MLP :: UpdateAllSubseq(Solucao *s, vector<vector<Subsequence>> &subseq_matrix, Data *d){
     int n = s->sequence.size();
     // subsequencias de um unico no
     for (int i = 0; i < n; i++){
@@ -39,12 +39,12 @@ void MLP :: UpdateAllSubseq(Solucao *s, vector<vector<Subsequence>> &subseq_matr
     }
     for (int i = 0; i < n; i++)
         for (int j = i + 1; j < n; j++)
-    subseq_matrix[i][j] = Subsequence::Concatenate(subseq_matrix[i][j-1], subseq_matrix[j][j]);
+            subseq_matrix[i][j] = Concatenate(subseq_matrix[i][j-1], subseq_matrix[j][j], d);
     // subsequencias invertidas
     // (necessarias para o 2-opt)
     for (int i = n - 1; i >= 0; i--)
         for (int j = i - 1; j >= 0; j--)
-            subseq_matrix[i][j] = Subsequence::Concatenate(subseq_matrix[i][j+1], subseq_matrix[j][j]);
+            subseq_matrix[i][j] = Concatenate(subseq_matrix[i][j+1], subseq_matrix[j][j], d);
 }
 
 void MLP :: solve(){

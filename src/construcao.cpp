@@ -33,7 +33,9 @@ Solucao MLP :: Construcao(Data *d){
         CL.erase(remove(CL.begin(), CL.end(), insertioncost[selecionado].inserir), CL.end());
     }
 
-    // UpdateAllSubseq(&current, sub_m, d);
+    UpdateAllSubseq(&current, subseq_matrix, d);
+
+    current.cost = subseq_matrix[0][d->vertices].C;
 
     return current;
 }

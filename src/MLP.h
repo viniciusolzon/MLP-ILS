@@ -35,9 +35,12 @@ struct InsertionInfo{
 };
 
 struct Subsequence{
-    
     double T = 0, C = 0;
-    int W = 0, first = 0, last = 0;  
+    int W = 0;
+    int first = 0, last = 0;
+    // double T, C;
+    // int W;
+    // int first, last;
 
     inline void exibir_subseq(){
         cout << "T:   " << this->T << endl;
@@ -48,6 +51,18 @@ struct Subsequence{
     }         
 };
 
+inline static Subsequence Concatenate(Subsequence &sigma_1, Subsequence &sigma_2, Data *d){
+    Subsequence sigma;
+    double temp = d->matrizAdj[sigma_1.last][sigma_2.first];
+    sigma.W = sigma_1.W + sigma_2.W;
+    sigma.T = sigma_1.T + temp + sigma_2.T;
+    sigma.C = sigma_1.C + sigma_2.W * (sigma_1.T + temp) + sigma_2.C;
+    sigma.first = sigma_1.first;
+    sigma.last = sigma_2.last;
+
+    return sigma;
+}
+
 class MLP{
 private:
     int maxIter;
@@ -55,16 +70,17 @@ private:
 
     Data dist;
     Solucao final_solution;
+    std::vector<std::vector<Subsequence>> subseq_matrix;
 
 public:
     MLP(Data d); // CONSTRUTOR
-    ~MLP(); // DESCONSTRUTOR
+    ~MLP(); // DESTRUTOR
 
     double epsilon(double a, double b);
     bool improve(double value_1, double value_2);
     void calcularcost(Solucao *s, Data *d);
 
-    void UpdateAllSubseq(Solucao *s, vector<vector<Subsequence>> &subseq_matrix);
+    void UpdateAllSubseq(Solucao *s, vector<vector<Subsequence>> &subseq_matrix, Data *d);
 
     Solucao Construcao(Data *d);
     vector<InsertionInfo> calcularCustoInsercao(Solucao *s, Data *d, vector<int> CL);
