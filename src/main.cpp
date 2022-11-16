@@ -10,10 +10,9 @@ int main(int argc, char *argv[]){
     
     Data d = {matrizAdj, dimension};
     MLP solution(d);
-
+    
     solution.solve();
     solution.show_solution();
-
 
     return 0;
 }

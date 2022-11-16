@@ -41,6 +41,7 @@ struct Subsequence{
     // double T, C;
     // int W;
     // int first, last;
+
     inline void exibir_subseq(){
         cout << "T:   " << this->T << endl;
         cout << "C:   " << this->C << endl;
@@ -57,7 +58,7 @@ private:
 
     Data dist;
     Solucao final_solution;
-    std::vector<std::vector<Subsequence>> subseq_matrix;
+    vector<vector<Subsequence>> subseq_matrix;
 
 public:
     MLP(Data d); // CONSTRUTOR
@@ -66,8 +67,6 @@ public:
     double epsilon(double a, double b);
     bool improve(double value_1, double value_2);
     void calcularcost(Solucao *s, Data *d);
-
-    void UpdateAllSubseq(Solucao *s, vector<vector<Subsequence>> &subseq_matrix, Data *d);
 
     Solucao Construcao(Data *d);
     vector<InsertionInfo> calcularCustoInsercao(Solucao *s, Data *d, vector<int> CL);
@@ -89,5 +88,6 @@ public:
 bool compare(const InsertionInfo &a, const InsertionInfo &b);
 
 inline static Subsequence Concatenate(Subsequence &sigma_1, Subsequence &sigma_2, Data *d);
+void UpdateAllSubseq(Solucao *s, vector<vector<Subsequence>> &subseq_matrix, Data *d);
 
 #endif

@@ -33,6 +33,7 @@ Solucao MLP :: Construcao(Data *d){
     }
 
     UpdateAllSubseq(&current, subseq_matrix, d);
+    printf("\n\nSAIU DO UpdateAllSubseq()\n\n");
 
     current.cost = subseq_matrix[0][d->vertices].C;
 

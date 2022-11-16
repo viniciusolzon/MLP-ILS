@@ -38,16 +38,23 @@ inline static Subsequence Concatenate(Subsequence &sigma_1, Subsequence &sigma_2
     return sigma;
 }
 
-void MLP :: UpdateAllSubseq(Solucao *s, vector<vector<Subsequence>> &subseq_matrix, Data *d){
+void UpdateAllSubseq(Solucao *s, vector<vector<Subsequence>> &subseq_matrix, Data *d){
     int n = s->sequence.size();
     // subsequencias de um unico no
     for (int i = 0; i < n; i++){
-        int v = s->sequence[i];
+    printf("\n\nsubseq_matrix[i][i].W = %d\n\n", subseq_matrix[i][i].W);
+        // int v = s->sequence[i];
+    printf("\n\nTESTE1\n\n");
         subseq_matrix[i][i].W = (i > 0);
+    printf("\n\nTESTE1\n\n");
         subseq_matrix[i][i].C = 0;
+    printf("\n\nTESTE1\n\n");
         subseq_matrix[i][i].T = 0;
+    printf("\n\nTESTE1\n\n");
         subseq_matrix[i][i].first = s->sequence[i];
+    printf("\n\nTESTE1\n\n");
         subseq_matrix[i][i].last = s->sequence[i];
+    printf("\n\nTESTE1\n\n");
     }
     for (int i = 0; i < n; i++)
         for (int j = i + 1; j < n; j++)
@@ -66,6 +73,7 @@ void MLP :: solve(){
 
     for(int i = 0; i < maxIter; i++){
         Solucao current = Construcao(&dist); // Cria a solução atual ( Muita gula e pouca aleatoriedade )
+    printf("\n\nSAIU DA CONSTRUCAO()\n\n");
 
         // calcularcost(&current, &dist); // Calcula o custo dessa solução com base na matriz de adjacência
         
