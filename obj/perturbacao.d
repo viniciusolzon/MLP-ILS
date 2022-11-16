@@ -1,2 +1,1 @@
--MM
-src/perturbacao.cpp
+obj/perturbacao.o: src/perturbacao.cpp src/MLP.h

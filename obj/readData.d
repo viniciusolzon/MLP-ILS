@@ -1,2 +1,1 @@
--MM
-src/readData.cpp
+obj/readData.o: src/readData.cpp
