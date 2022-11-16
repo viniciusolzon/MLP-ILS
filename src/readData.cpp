@@ -10,7 +10,7 @@ double CalcDistAtt ( double *X, double *Y, int I, int J );
 void CalcLatLong ( double *X, double *Y, int n, double *latit, double* longit );
 double CalcDistGeo ( double *latit, double *longit, int I, int J );
 
-void readData( int argc, char** argv, int* Dimension, double ***Mdist)
+void readData( int argc, char** argv, int* Dimension, double ***Mdist )
 {
 
      if (argc < 2) {

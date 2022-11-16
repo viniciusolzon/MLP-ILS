@@ -1,4 +1,4 @@
-#include "ILS.h"
+#include "MLP.h"
 #include "readData.h"
 
 int main(int argc, char *argv[]){
@@ -9,7 +9,7 @@ int main(int argc, char *argv[]){
     readData(argc, argv, &dimension, &matrizAdj);
     
     Data d = {matrizAdj, dimension};
-    ILS solution(d);
+    MLP solution(d);
 
     solution.solve();
     solution.show_solution();

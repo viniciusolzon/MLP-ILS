@@ -1,5 +1,5 @@
-#ifndef ILS_H
-#define ILS_H
+#ifndef MLP_H
+#define MLP_H
 
 #include <vector>
 #include <cmath>
@@ -8,6 +8,7 @@
 #include <iostream>
 #include <iomanip>
 #include <chrono>
+#include <bits/stdc++.h>
 
 using std::cout;
 using std::cin;
@@ -33,19 +34,37 @@ struct InsertionInfo{
     double cost = 0.0;
 };
 
-class ILS{
+struct Subsequence{
+    
+    double T = 0, C = 0;
+    int W = 0, first = 0, last = 0;  
+
+    inline void exibir_subseq(){
+        cout << "T:   " << this->T << endl;
+        cout << "C:   " << this->C << endl;
+        cout << "W:   " << this->W << endl;
+        cout << "first:   " << this->first << endl;
+        cout << "last:   " << this->last << endl << endl;
+    }         
+};
+
+class MLP{
+private:
     int maxIter;
-    int maxIterILS;
+    int maxiterILS;
+
     Data dist;
-    Solucao best_solution;
+    Solucao final_solution;
 
 public:
-    ILS(Data d); // CONSTRUTOR
-    ~ILS(); // DESCONSTRUTOR
+    MLP(Data d); // CONSTRUTOR
+    ~MLP(); // DESCONSTRUTOR
 
     double epsilon(double a, double b);
     bool improve(double value_1, double value_2);
     void calcularcost(Solucao *s, Data *d);
+
+    void UpdateAllSubseq(Solucao *s, vector<vector<Subsequence>> &subseq_matrix);
 
     Solucao Construcao(Data *d);
     vector<InsertionInfo> calcularCustoInsercao(Solucao *s, Data *d, vector<int> CL);

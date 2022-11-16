@@ -1,6 +1,6 @@
-#include "ILS.h"
+#include "MLP.h"
 
-double ILS :: calculateSwapCost(Solucao *s, Data *d, int first, int second){
+double MLP :: calculateSwapCost(Solucao *s, Data *d, int first, int second){
     double origin = 0.0, after = 0.0, cost = 0.0;
     if(second == first + 1){
         origin = d->matrizAdj[s->sequence[first - 1]][s->sequence[first]] + d->matrizAdj[s->sequence[second]][s->sequence[first]] + d->matrizAdj[s->sequence[second]][s->sequence[second + 1]];
@@ -16,7 +16,7 @@ double ILS :: calculateSwapCost(Solucao *s, Data *d, int first, int second){
     return cost;
 }
 
-bool ILS :: bestImprovementSwap(Solucao *s, Data *d){
+bool MLP :: bestImprovementSwap(Solucao *s, Data *d){
     double bestcost = 0.0;
     double cost = 0.0;
     int best_i, best_j;
@@ -41,7 +41,7 @@ bool ILS :: bestImprovementSwap(Solucao *s, Data *d){
     return false;
 }
 
-double ILS :: calculate2OptCost(Solucao *s, Data *d, int first, int second){
+double MLP :: calculate2OptCost(Solucao *s, Data *d, int first, int second){
     double origin = 0.0, after = 0.0, cost = 0.0;
     origin = d->matrizAdj[s->sequence[first - 1]][s->sequence[first]] + d->matrizAdj[s->sequence[second]][s->sequence[second + 1]];
     after = d->matrizAdj[s->sequence[first - 1]][s->sequence[second]] + d->matrizAdj[s->sequence[first]][s->sequence[second + 1]];
@@ -50,7 +50,7 @@ double ILS :: calculate2OptCost(Solucao *s, Data *d, int first, int second){
     return cost;
 }
 
-bool ILS :: bestImprovement2Opt(Solucao *s, Data *d){
+bool MLP :: bestImprovement2Opt(Solucao *s, Data *d){
     double bestcost = 0.0, cost = 0.0;
     int best_i, best_j;             
 
@@ -74,7 +74,7 @@ bool ILS :: bestImprovement2Opt(Solucao *s, Data *d){
     return false;
 }
 
-double ILS :: calculateOrOptCost(Solucao *s, Data *d, int first, int second, int amount){
+double MLP :: calculateOrOptCost(Solucao *s, Data *d, int first, int second, int amount){
     double origin = 0.0, after = 0.0, cost = 0.0;
     if(first > second){
         origin = d->matrizAdj[s->sequence[second - 1]][s->sequence[second]] + d->matrizAdj[s->sequence[first - 1]][s->sequence[first]] + d->matrizAdj[s->sequence[first + amount - 1]][s->sequence[first + amount]];
@@ -89,7 +89,7 @@ double ILS :: calculateOrOptCost(Solucao *s, Data *d, int first, int second, int
     return cost;
 }
 
-bool ILS :: bestImprovementOrOpt(Solucao *s, Data *d, int amount){
+bool MLP :: bestImprovementOrOpt(Solucao *s, Data *d, int amount){
     double bestcost = 0.0, cost = 0.0;
     int best_i, best_j;
     for(int i = 1; i < s->sequence.size() - amount; i++){
@@ -120,7 +120,7 @@ bool ILS :: bestImprovementOrOpt(Solucao *s, Data *d, int amount){
     return false;
 }
 
-void ILS :: BuscaLocal(Solucao *s, Data *d){
+void MLP :: BuscaLocal(Solucao *s, Data *d){
     vector<int> NL = {1, 2, 3, 4, 5};
     bool improved = false;
     while(NL.empty() == false){
