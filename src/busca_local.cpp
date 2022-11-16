@@ -114,6 +114,7 @@ bool MLP :: bestImprovementOrOpt(Solucao *s, Data *d, int amount){
         s->sequence.insert(s->sequence.begin() + best_j, section.begin(), section.end());
 
         s->cost+=bestcost;
+        
         return true;
     }
 

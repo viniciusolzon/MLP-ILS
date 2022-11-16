@@ -26,6 +26,18 @@ void MLP :: calcularcost(Solucao *s, Data *d){
         s->cost += d->matrizAdj[s->sequence[i]][s->sequence[i+1]];
 }
 
+inline static Subsequence Concatenate(Subsequence &sigma_1, Subsequence &sigma_2, Data *d){
+    Subsequence sigma;
+    double temp = d->matrizAdj[sigma_1.last][sigma_2.first];
+    sigma.W = sigma_1.W + sigma_2.W;
+    sigma.T = sigma_1.T + temp + sigma_2.T;
+    sigma.C = sigma_1.C + sigma_2.W * (sigma_1.T + temp) + sigma_2.C;
+    sigma.first = sigma_1.first;
+    sigma.last = sigma_2.last;
+
+    return sigma;
+}
+
 void MLP :: UpdateAllSubseq(Solucao *s, vector<vector<Subsequence>> &subseq_matrix, Data *d){
     int n = s->sequence.size();
     // subsequencias de um unico no

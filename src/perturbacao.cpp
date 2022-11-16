@@ -42,7 +42,6 @@ Solucao MLP :: Pertubacao(Solucao *s, Data *d){
     
     vector<int> segment1(s_copy.sequence.begin() + start1, s_copy.sequence.begin() + start1 + size1);
     vector<int> segment2(s_copy.sequence.begin() + start2, s_copy.sequence.begin() + start2 + size2);
-    
     double origin, after, cost;
 
     if(start1 + size1 == start2){
@@ -87,7 +86,7 @@ Solucao MLP :: Pertubacao(Solucao *s, Data *d){
         s_copy.sequence.erase(s_copy.sequence.begin() + start1, s_copy.sequence.begin() + start1 + size1);
         s_copy.sequence.insert(s_copy.sequence.begin() + start1, segment2.begin(), segment2.end());
     }
-
+    
     cost = after - origin;
     s_copy.cost += cost;
 

@@ -22,7 +22,6 @@ Solucao MLP :: Construcao(Data *d){
 
     while(!CL.empty()){
         insertioncost = calcularCustoInsercao(&current, d, CL);
-
         sort(insertioncost.begin(), insertioncost.end(), compare);
 
         double alpha = (double) (rand() % 25) / 100;
