@@ -86,9 +86,9 @@ Solucao MLP :: Pertubacao(Solucao *s, Data *d){
         s_copy.sequence.erase(s_copy.sequence.begin() + start1, s_copy.sequence.begin() + start1 + size1);
         s_copy.sequence.insert(s_copy.sequence.begin() + start1, segment2.begin(), segment2.end());
     }
-    
-    cost = after - origin;
-    s_copy.cost += cost;
+
+    UpdateAllSubseq(&s_copy, subseq_matrix, d);
+    s_copy.cost = subseq_matrix[0][d->vertices].C;
 
     return s_copy;
 }

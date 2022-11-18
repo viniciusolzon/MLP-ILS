@@ -11,7 +11,7 @@ Solucao MLP :: Construcao(Data *d){
     current.sequence = {1};
 
     random_shuffle(CL.begin(), CL.end());
-    for(int i = 0; i < 2; i++){
+    for(int i = 0; i < 3; i++){
         current.sequence.push_back(CL[i]);
         CL.erase(remove(CL.begin(), CL.end(), CL[i]), CL.end());
     }
@@ -33,8 +33,6 @@ Solucao MLP :: Construcao(Data *d){
     }
 
     UpdateAllSubseq(&current, subseq_matrix, d);
-    printf("\n\nSAIU DO UpdateAllSubseq()\n\n");
-
     current.cost = subseq_matrix[0][d->vertices].C;
 
     return current;

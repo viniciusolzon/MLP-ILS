@@ -4,6 +4,7 @@ MLP :: MLP(Data d){ // Construtor
     dist = d;
     maxIter = 10;
     maxiterILS = d.vertices >= 100 ? d.vertices : d.vertices;
+    subseq_matrix = vector<vector<Subsequence>> (dist.vertices + 1, vector<Subsequence>(dist.vertices + 1));
 }
 
 MLP :: ~MLP(){} // Destrutor
@@ -22,48 +23,30 @@ bool MLP :: improve(double value_1, double value_2){
 
 void MLP :: calcularcost(Solucao *s, Data *d){
     s->cost = 0.0;
-    for(int i = 0; i < s->sequence.size() - 1; i++)
-        s->cost += d->matrizAdj[s->sequence[i]][s->sequence[i+1]];
-}
-
-inline static Subsequence Concatenate(Subsequence &sigma_1, Subsequence &sigma_2, Data *d){
-    Subsequence sigma;
-    double temp = d->matrizAdj[sigma_1.last][sigma_2.first];
-    sigma.W = sigma_1.W + sigma_2.W;
-    sigma.T = sigma_1.T + temp + sigma_2.T;
-    sigma.C = sigma_1.C + sigma_2.W * (sigma_1.T + temp) + sigma_2.C;
-    sigma.first = sigma_1.first;
-    sigma.last = sigma_2.last;
-
-    return sigma;
+    for(int i = 0; i < d->vertices; i++)
+        s->cost += (d->vertices - i) * d->matrizAdj[s->sequence[i]][s->sequence[i+1]];
 }
 
 void UpdateAllSubseq(Solucao *s, vector<vector<Subsequence>> &subseq_matrix, Data *d){
     int n = s->sequence.size();
     // subsequencias de um unico no
     for (int i = 0; i < n; i++){
-    printf("\n\nsubseq_matrix[i][i].W = %d\n\n", subseq_matrix[i][i].W);
         // int v = s->sequence[i];
-    printf("\n\nTESTE1\n\n");
         subseq_matrix[i][i].W = (i > 0);
-    printf("\n\nTESTE1\n\n");
         subseq_matrix[i][i].C = 0;
-    printf("\n\nTESTE1\n\n");
         subseq_matrix[i][i].T = 0;
-    printf("\n\nTESTE1\n\n");
         subseq_matrix[i][i].first = s->sequence[i];
-    printf("\n\nTESTE1\n\n");
         subseq_matrix[i][i].last = s->sequence[i];
-    printf("\n\nTESTE1\n\n");
     }
+
     for (int i = 0; i < n; i++)
         for (int j = i + 1; j < n; j++)
-            subseq_matrix[i][j] = Concatenate(subseq_matrix[i][j-1], subseq_matrix[j][j], d);
+            subseq_matrix[i][j] = Subsequence :: Concatenate(subseq_matrix[i][j-1], subseq_matrix[j][j], d);
     // subsequencias invertidas
     // (necessarias para o 2-opt)
     for (int i = n - 1; i >= 0; i--)
         for (int j = i - 1; j >= 0; j--)
-            subseq_matrix[i][j] = Concatenate(subseq_matrix[i][j+1], subseq_matrix[j][j], d);
+            subseq_matrix[i][j] = Subsequence :: Concatenate(subseq_matrix[i][j+1], subseq_matrix[j][j], d);
 }
 
 void MLP :: solve(){
@@ -73,10 +56,7 @@ void MLP :: solve(){
 
     for(int i = 0; i < maxIter; i++){
         Solucao current = Construcao(&dist); // Cria a solução atual ( Muita gula e pouca aleatoriedade )
-    printf("\n\nSAIU DA CONSTRUCAO()\n\n");
 
-        // calcularcost(&current, &dist); // Calcula o custo dessa solução com base na matriz de adjacência
-        
         Solucao best = current; // Cria a solução que guardará a melhor solução dessa iteração
         if(i == 0)
             bestOfAll = current; // Se for a primeira solução criada ela já é atribuída para a melhor solução possível
@@ -102,11 +82,12 @@ void MLP :: solve(){
             bestOfAll = best;
     }
 
+    final_solution = bestOfAll;
+
     auto end = std::chrono::high_resolution_clock::now(); // Para o cronômetro
     std::chrono::duration<double, std::milli> float_ms = end - start; // Calcula o tempo do cronômetro
     cout << "\nExecution time:  " << float_ms.count() / 1000.0000000000000 << " seconds" << "\n";
 
-    final_solution = bestOfAll;
 }
 
 void MLP :: show_solution(){

@@ -1,19 +1,15 @@
 #include "MLP.h"
 
 double MLP :: calculateSwapCost(Solucao *s, Data *d, int first, int second){
-    double origin = 0.0, after = 0.0, cost = 0.0;
-    if(second == first + 1){
-        origin = d->matrizAdj[s->sequence[first - 1]][s->sequence[first]] + d->matrizAdj[s->sequence[second]][s->sequence[first]] + d->matrizAdj[s->sequence[second]][s->sequence[second + 1]];
-        after = d->matrizAdj[s->sequence[first - 1]][s->sequence[second]] + d->matrizAdj[s->sequence[second]][s->sequence[first]] + d->matrizAdj[s->sequence[first]][s->sequence[second + 1]];
-        cost = after - origin;
-    }
-    else{
-        origin = d->matrizAdj[s->sequence[first - 1]][s->sequence[first]] + d->matrizAdj[s->sequence[first + 1]][s->sequence[first]] + d->matrizAdj[s->sequence[second - 1]][s->sequence[second]] + d->matrizAdj[s->sequence[second + 1]][s->sequence[second]];
-        after = d->matrizAdj[s->sequence[first - 1]][s->sequence[second]] + d->matrizAdj[s->sequence[first + 1]][s->sequence[second]] + d->matrizAdj[s->sequence[second - 1]][s->sequence[first]] + d->matrizAdj[s->sequence[second + 1]][s->sequence[first]];
-        cost = after - origin;
-    }
+    Subsequence sigma1, sigma2, sigma3, major_sigma;
+    
+    sigma1 = Subsequence :: Concatenate(subseq_matrix[0][first - 1], subseq_matrix[second][second], d);
+    sigma2  = Subsequence :: Concatenate(sigma1, major_sigma, d);
+    sigma3 = Subsequence :: Concatenate(sigma2, subseq_matrix[second + 1][s->sequence.size() - 1], d); 
 
-    return cost;
+    major_sigma = Subsequence :: Concatenate(subseq_matrix[first + 1][second - 1], subseq_matrix[first][first], d);
+
+	return sigma3.C;
 }
 
 bool MLP :: bestImprovementSwap(Solucao *s, Data *d){
@@ -42,12 +38,12 @@ bool MLP :: bestImprovementSwap(Solucao *s, Data *d){
 }
 
 double MLP :: calculate2OptCost(Solucao *s, Data *d, int first, int second){
-    double origin = 0.0, after = 0.0, cost = 0.0;
-    origin = d->matrizAdj[s->sequence[first - 1]][s->sequence[first]] + d->matrizAdj[s->sequence[second]][s->sequence[second + 1]];
-    after = d->matrizAdj[s->sequence[first - 1]][s->sequence[second]] + d->matrizAdj[s->sequence[first]][s->sequence[second + 1]];
-    cost = after - origin;
+   Subsequence sigma_1, major_sigma;
 
-    return cost;
+   sigma_1 = Subsequence :: Concatenate(subseq_matrix[0][first - 1], subseq_matrix[second][first], d);
+   major_sigma = Subsequence :: Concatenate(sigma_1, subseq_matrix[second + 1][d->vertices], d);
+
+   return major_sigma.C;
 }
 
 bool MLP :: bestImprovement2Opt(Solucao *s, Data *d){
@@ -66,7 +62,6 @@ bool MLP :: bestImprovement2Opt(Solucao *s, Data *d){
     }
     if(bestcost < 0){
         reverse(s->sequence.begin() + best_i, s->sequence.begin() + best_j + 1);
-
         s->cost+=bestcost;
         return true;
     }
@@ -75,18 +70,20 @@ bool MLP :: bestImprovement2Opt(Solucao *s, Data *d){
 }
 
 double MLP :: calculateOrOptCost(Solucao *s, Data *d, int first, int second, int amount){
-    double origin = 0.0, after = 0.0, cost = 0.0;
-    if(first > second){
-        origin = d->matrizAdj[s->sequence[second - 1]][s->sequence[second]] + d->matrizAdj[s->sequence[first - 1]][s->sequence[first]] + d->matrizAdj[s->sequence[first + amount - 1]][s->sequence[first + amount]];
-        after = d->matrizAdj[s->sequence[second - 1]][s->sequence[first]] + d->matrizAdj[s->sequence[first + amount - 1]][s->sequence[second]] + d->matrizAdj[s->sequence[first - 1]][s->sequence[first + amount]];
-    }
-    else{
-        origin = d->matrizAdj[s->sequence[first - 1]][s->sequence[first]] + d->matrizAdj[s->sequence[first + amount - 1]][s->sequence[first + amount]] + d->matrizAdj[s->sequence[second + amount - 1]][s->sequence[second + amount]];
-        after = d->matrizAdj[s->sequence[first - 1]][s->sequence[first + amount]] + d->matrizAdj[s->sequence[second + amount - 1]][s->sequence[first]] + d->matrizAdj[s->sequence[first + amount - 1]][s->sequence[second + amount]];
-    }
-    cost = after - origin;
+    Subsequence sigma_1, sigma_2, complete_sub;
 
-    return cost;
+    if (second > first){
+        sigma_1 = Subsequence :: Concatenate(subseq_matrix[0][second-1], subseq_matrix[first][first + amount - 1], d);
+        sigma_2 = Subsequence :: Concatenate(sigma_1, subseq_matrix[second][first - 1], d);
+        complete_sub = Subsequence :: Concatenate(sigma_2, subseq_matrix[first + amount][d->vertices], d);
+    }
+    else if (first < second){
+        sigma_1 = Subsequence ::  Concatenate(subseq_matrix[0][first-1], subseq_matrix[first + amount][second + amount - 1], d);
+        sigma_2 = Subsequence :: Concatenate(sigma_1, subseq_matrix[first][first + amount - 1], d);
+        complete_sub = Subsequence :: Concatenate(sigma_2, subseq_matrix[second + amount][d->vertices], d);
+    }
+
+   return complete_sub.C;
 }
 
 bool MLP :: bestImprovementOrOpt(Solucao *s, Data *d, int amount){
@@ -143,8 +140,10 @@ void MLP :: BuscaLocal(Solucao *s, Data *d){
                 improved = bestImprovementOrOpt(s, d, 3);
                 break;
         }
-        if(improved)
+        if(improved){
             NL = {1, 2, 3, 4, 5};
+            UpdateAllSubseq(s, subseq_matrix, d);
+        }
         else
             NL.erase(NL.begin() + n);
     }
