@@ -14,6 +14,5 @@ int main(int argc, char *argv[]){
     solution.solve();
     solution.show_solution();
 
-
     return 0;
 }

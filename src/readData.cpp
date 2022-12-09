@@ -353,8 +353,7 @@ void readData( int argc, char** argv, int* Dimension, double ***Mdist )
 
 double CalcDistEuc ( double *X, double *Y, int I, int J )
 {
-    return
-    sqrt ( pow ( X[I] - X[J], 2 ) + pow ( Y[I] - Y[J], 2 ) );
+    return sqrt ( pow ( X[I] - X[J], 2 ) + pow ( Y[I] - Y[J], 2 ) );
 }
 
 double CalcDistAtt ( double *X, double *Y, int I, int J )

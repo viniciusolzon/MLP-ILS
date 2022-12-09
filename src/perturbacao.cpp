@@ -1,6 +1,7 @@
 #include "MLP.h"
 
 Solucao MLP :: Pertubacao(Solucao *s, Data *d){
+    
     Solucao s_copy;
     s_copy.sequence = s->sequence;
     s_copy.cost = s->cost;

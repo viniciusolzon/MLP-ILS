@@ -7,15 +7,15 @@ Solucao MLP :: Construcao(Data *d){
     for (int i = 2; i <= d->vertices; i++){
         CL.push_back(i);
     }
-
-    current.sequence = {1};
+    // Sequencia começa com 1
+    current.sequence.push_back(1);
 
     random_shuffle(CL.begin(), CL.end());
-    for(int i = 0; i < 3; i++){
+    for(int i = 0; i < 2; i++){
         current.sequence.push_back(CL[i]);
         CL.erase(remove(CL.begin(), CL.end(), CL[i]), CL.end());
     }
-
+    // E termina com 1
     current.sequence.push_back(1);
 
     vector<InsertionInfo> insertioncost;

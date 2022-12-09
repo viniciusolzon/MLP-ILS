@@ -42,8 +42,8 @@ void UpdateAllSubseq(Solucao *s, vector<vector<Subsequence>> &subseq_matrix, Dat
     for (int i = 0; i < n; i++)
         for (int j = i + 1; j < n; j++)
             subseq_matrix[i][j] = Subsequence :: Concatenate(subseq_matrix[i][j-1], subseq_matrix[j][j], d);
-    // subsequencias invertidas
-    // (necessarias para o 2-opt)
+
+    
     for (int i = n - 1; i >= 0; i--)
         for (int j = i - 1; j >= 0; j--)
             subseq_matrix[i][j] = Subsequence :: Concatenate(subseq_matrix[i][j+1], subseq_matrix[j][j], d);
@@ -59,7 +59,7 @@ void MLP :: solve(){
 
         Solucao best = current; // Cria a solução que guardará a melhor solução dessa iteração
         if(i == 0)
-            bestOfAll = current; // Se for a primeira solução criada ela já é atribuída para a melhor solução possível
+            bestOfAll.cost = current.cost; // Se for a primeira solução criada ela já é atribuída para a melhor solução possível
 
         int iterILS = 0;
         while(iterILS <= maxiterILS){ // Enquanto houver melhoras nessa solução, reinicia-se o processo de melhora
